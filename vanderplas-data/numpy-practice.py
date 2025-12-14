@@ -60,7 +60,7 @@ def _(np):
     # create an array filled with a linear sequence -> start at 0, end at 20, step by 2
     range_arr = np.arange(0, 20, 2)
 
-    # create an array of 5 valkues evenly spaced between 0 and 1
+    # create an array of 5 values evenly spaced between 0 and 1
     space_arr = np.linspace(0, 1, 5)
 
     # create a 3x3 array of uniformly distributed random values between 0 and 1
@@ -295,6 +295,157 @@ def _(x2):
 @app.cell
 def _(x3):
     print_attr("x3", x3)
+    return
+
+
+@app.cell
+def _(np, x2):
+    def print_indexing(name, val, nd=False):
+        print(f"name -> {name}")
+        print(f"val -> {val}")
+        if nd:
+            val_copy = val.copy()
+            print(f"Some values -> {val[0, 0], val[2, 0], val[2, -1]}")
+            val_copy[0, 0] = 12
+            print(f"Modify val -> {val_copy}")
+        else:
+            val_copy = val.copy()
+            print(f"Some forward values -> {val[0], val[4]}")
+            print(f"Some backward values -> {val[-1], val[-2]}")
+            val_copy[0] = 3.14159
+            print(f"Modify val\n{val_copy}")
+
+
+    def print_slicing(name, val=x2, nd=False):
+        if name == "1d":
+            x = np.arange(10)
+            print(f"val -> {x}")
+            print(f"first five -> {x[:5]}")
+            print(f"next five -> {x[5:]}")
+            print(f"middle -> {x[4:7]}")
+            print(f"every other -> {x[::2]}")
+            print(f"start at one, every other -> {x[1::2]}")
+            print(f"reverse -> {x[::-1]}")
+            print(f"reverse every other starting from index 5 -> {x[5::-2]}")
+        else:
+            val_copy = val.copy()
+            print(f"val -> {val}")
+            print(f"two rows three columns -> {val_copy[:2, :3]}")
+            print(f"all rows very other column -> {val_copy[:3, ::2]}")
+            print(f"reverse subdimensions -> {val_copy[::-1, ::-1]}")
+            print(f"first column of x2 -> {val_copy[:, 0]}")
+            print(f"first row of x2 -> {val_copy[0, :]}")
+            print(f"compact syntax -> {val_copy[0]}")
+
+
+    def print_reshape():
+        grid = np.arange(1, 10).reshape((3, 3))
+        print(f"Grid -> {grid}")
+        x = np.array([1, 2, 3])
+        y = x.copy()
+        z = x.copy()
+        print(f"row vector via reshape -> {y.reshape((1, 3))}")
+        print(f"row vector via newaxis -> {y[np.newaxis, :]}")
+        print(f"column vector via reshape -> {z.reshape((3, 1))}")
+        print(f"column vector via newaxis -> {z[:, np.newaxis]}")
+
+
+    def print_concat():
+        x = np.array([1, 2, 3])
+        y = np.array([3, 2, 1])
+        print(f"concat {x} {y} -> {np.concatenate([x, y])}")
+        z = [99, 99, 99]
+        print(f"concatenate again -> {np.concatenate([x, y, z])}")
+        grid1 = np.arange(1, 7).reshape(2, 3)
+        grid2 = grid1.copy()
+        print(
+            f"concatenate grid along first axis -> {np.concatenate([grid1, grid1])}"
+        )
+        print(
+            f"concatenate grid along second axis -> {np.concatenate([grid2, grid2], axis=1)}"
+        )
+        x1 = np.array([1, 2, 3])
+        grid3 = np.array([[9, 8, 7], [6, 5, 4]])
+        print(f"vertically stack arrays -> {np.vstack([x, grid3])}")
+        y2 = np.array([[99], [99]])
+        print(f"horizontally stack arrays -> {np.hstack([grid3, y2])}")
+
+
+    def print_split():
+        x = [1, 2, 3, 99, 99, 3, 2, 1]
+        x1, x2, x3 = np.split(x, [3, 5])
+        print(f"x1 -> {x1}\nx2 -> {x2}\nx3 -> {x3}")
+        grid = np.arange(16).reshape(4, 4)
+        print(f"grid\n{grid}")
+        upper, lower = np.vsplit(grid, [2])
+        print(
+            f"upper grid vertical split -> {upper}\nlower grid vertical split -> {lower}"
+        )
+        left, right = np.hsplit(grid, [2])
+        print(
+            f"left grid horizontal split -> {left}\nright grid horizontal split -> {right}"
+        )
+    return (
+        print_concat,
+        print_indexing,
+        print_reshape,
+        print_slicing,
+        print_split,
+    )
+
+
+@app.cell
+def _(print_indexing, x1):
+    print_indexing("1-d array", x1)
+    return
+
+
+@app.cell
+def _(print_indexing, x2):
+    print_indexing("2-d array", x2, nd=True)
+    return
+
+
+@app.cell
+def _(print_slicing):
+    print_slicing("1d")
+    return
+
+
+@app.cell
+def _(print_slicing):
+    print_slicing("2d-array", nd=True)
+    return
+
+
+@app.cell
+def _(print_reshape):
+    print_reshape()
+    return
+
+
+@app.cell
+def _(print_concat):
+    print_concat()
+    return
+
+
+@app.cell
+def _(print_split):
+    print_split()
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ## Computation on Numpy Arrays
+    """)
+    return
+
+
+@app.cell
+def _():
     return
 
 
