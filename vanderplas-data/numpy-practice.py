@@ -445,7 +445,146 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(np):
+    from scipy import special
+    def print_arithmetic():
+        x = np.arange(4)
+        print(f"x -> {x}")
+        print(f"x + 5 -> {x + 5}")
+        print(f"x - 5 -> {x - 5}")
+        print(f"x * 2 -> {x * 2}")
+        print(f"x / 2 - > {x / 2}")
+        print(f"x // 2 -> {x // 2}")
+        print(f"-x -> {-x}")
+        print(f"x**2 -> {x**2}")
+        print(f"x % 2 -> {x % 2}")
+        print(f"-(0.5*x+1)**2 -> {-(0.5*x+1)**2}")
+
+    def print_abs():
+        x = np.linspace(-2, 2, 5)
+        print(f"x -> {x}")
+        print(f"abs(x) -> {np.abs(x)}")
+        y = np.array([3 - 4j, 4 - 3j, 2 + 0j, 0 + 1j])
+        print(f"y -> {y}")
+        print(f"complex abs(y) -> {np.abs(y)}")
+
+    def print_trig():
+        theta = np.linspace(0, np.pi, 3)
+        print(f"theta -> {theta}")
+        print(f"sin(theta) -> {np.sin(theta)}")
+        print(f"cos(theta) -> {np.cos(theta)}")
+        print(f"tan(theta) -> {np.tan(theta)}")
+        x = [-1, 0, 1]
+        print(f"x -> {x}")
+        print(f"arcsin(x) -> {np.arcsin(x)}")
+        print(f"arccos(x) -> {np.arccos(x)}")
+        print(f"arctan(x) -> {np.arctan(x)}")
+
+    def print_exponential_log():
+        x = [1, 2, 4, 10]
+        print(f"x -> {x}")
+        print(f"ln(x) -> {np.log(x)}")
+        print(f"log2(x -> {np.log2(x)}")
+        print(f"log10(x) -> {np.log10(x)}")
+        y = [1, 2, 3]
+        print(f"x -> {x}")
+        print(f"e^x -> {np.exp(x)}")
+        print(f"2^x -> {np.exp2(x)}")
+        print(f"3^x -> {np.power(3, x)}")
+        z = [0, 1.001, 0.01, 0.1]
+        print(f"exp(x) - 1 -> {np.expm1(z)}")
+        print(f"log(1 + x) -> {np.log1p(z)}")
+
+    def print_special():
+        # error function(integral of gaussain), its complement and its inverse
+        x = [1, 5, 10]
+        print(f"x -> {x}")
+        print(f"gamma(x) -> {special.gamma(x)}")
+        print(f"ln|gamma(x)| -> {special.gammaln(x)}")
+        print(f"beta(x, 2) -> {special.beta(x, 2)}")
+        y = np.array([0, 0.3, 0.7, 1.0])
+        print(f"erf(x) -> {special.erf(y)}")
+        print(f"erfc(x) -> {special.erfc(y)}")
+        print(f"erfinv(x) -> {special.erfinv(y)}")
+
+    def print_advanced():
+        x = np.arange(5)
+        y = np.empty(5)
+        np.multiply(x, 10, out=y)
+        print(f"y -> {y}")
+        z = np.zeros(10)
+        np.power(2, x, out=z[::2])
+        print(f"z ->  {z}")
+
+    def print_aggr():
+        x = np.arange(1,6)
+        print(f"x -> {x}")
+        print(f"add reduce x -> {np.add.reduce(x)}")
+        print(f"multiply reduce x -> {np.multiply.reduce(x)}")
+        print(f"accumulate add -> {np.add.accumulate(x)}")
+        print(f"accmulate multiply -> {np.multiply.accumulate(x)}")
+
+    def print_outer_product():
+        x = np.arange(1, 6)
+        print(f"x -> {x}")
+        print(f"outer product -> {np.multiply.outer(x, x)}")
+    return (
+        print_abs,
+        print_advanced,
+        print_aggr,
+        print_arithmetic,
+        print_exponential_log,
+        print_outer_product,
+        print_special,
+        print_trig,
+    )
+
+
+@app.cell
+def _(print_arithmetic):
+    print_arithmetic()
+    return
+
+
+@app.cell
+def _(print_abs):
+    print_abs()
+    return
+
+
+@app.cell
+def _(print_trig):
+    print_trig()
+    return
+
+
+@app.cell
+def _(print_exponential_log):
+    print_exponential_log()
+    return
+
+
+@app.cell
+def _(print_special):
+    print_special()
+    return
+
+
+@app.cell
+def _(print_advanced):
+    print_advanced()
+    return
+
+
+@app.cell
+def _(print_aggr):
+    print_aggr()
+    return
+
+
+@app.cell
+def _(print_outer_product):
+    print_outer_product()
     return
 
 
