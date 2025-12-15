@@ -10,13 +10,23 @@ def _():
     import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
-    return mo, np
+    import seaborn as sn
+    from pathlib import Path
+    import sys
+    return Path, mo, np, pd, plt, sn, sys
 
 
 @app.cell
 def _(np):
     np.__version__
     return
+
+
+@app.cell
+def _(Path, sys):
+    data_files = Path("data/")
+    sys.path.append(str(data_files))
+    return (data_files,)
 
 
 @app.cell
@@ -245,6 +255,7 @@ def _(mo):
 def _(mo):
     mo.md("""
     **Attributes** -> Determining the size, shape, memory consumption, and data types of arrays
+
     **Indexing** -> Getting and setting the value of individual array elements
 
     **Slicing** -> Getting and setting smaller subarrays within a larger array
@@ -496,7 +507,7 @@ def _(np):
         print(f"log(1 + x) -> {np.log1p(z)}")
 
     def print_special():
-        # error function(integral of gaussain), its complement and its inverse
+        # error function(integral of gaussian), its complement and its inverse
         x = [1, 5, 10]
         print(f"x -> {x}")
         print(f"gamma(x) -> {special.gamma(x)}")
@@ -585,6 +596,87 @@ def _(print_aggr):
 @app.cell
 def _(print_outer_product):
     print_outer_product()
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ## Aggregations - Min, Max, and everything in between
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ### Definitions
+    """)
+    return
+
+
+@app.cell
+def _(data_files, np, pd, plt, sn):
+    def print_sum():
+        L = np.random.random(100)
+        print(f"L -> {L}")
+        print(f"sum -> {np.sum(L)}")
+    def print_minmax():
+        big_array = np.random.rand(1000000)
+        print(f"big array -> {big_array}")
+        print(f"min -> {np.min(big_array)}")
+        print(f"max -> {np.max(big_array)}")
+        print(f"min compact -> {big_array.min()}")
+        print(f"max compact -> {big_array.max()}")
+        print(f"sum compact -> {big_array.sum()}")
+    def print_ndaggr():
+        M = np.random.random((3, 4))
+        print(f"M -> {M}")
+        print(f"sum -> {M.sum()}")
+        print(f"min axis=0 -> {M.min(axis=0)}")
+        print(f"max axis=1 -> {M.max(axis=1)}")
+    def print_eda():
+        data = data_files / "president_heights.csv"
+        df = pd.read_csv(data)
+        heights = np.array(df['height(cm)'])
+        print(f"heights -> {heights}")
+        print(f"Mean heights -> {heights.mean()}")
+        print(f"Standard deviation -> {heights.std()}")
+        print(f"Min height -> {heights.min()}")
+        print(f"Ma height -> {heights.max()}")
+        print(f"25th percentile -> {np.percentile(heights,25)}")
+        print(f"Median -> {np.median(heights)}")
+        print(f"75th percentile -> {np.percentile(heights, 75)}")
+        sn.set()
+        plt.hist(heights)
+        plt.title("Height Distribution of US Presidents")
+        plt.xlabel('height(cm)')
+        plt.ylabel('number')
+        plt.show()
+    return print_eda, print_minmax, print_ndaggr, print_sum
+
+
+@app.cell
+def _(print_sum):
+    print_sum()
+    return
+
+
+@app.cell
+def _(print_minmax):
+    print_minmax()
+    return
+
+
+@app.cell
+def _(print_ndaggr):
+    print_ndaggr()
+    return
+
+
+@app.cell
+def _(print_eda):
+    print_eda()
     return
 
 
