@@ -13,6 +13,7 @@ def _():
     import seaborn as sn
     from pathlib import Path
     import sys
+
     return Path, mo, np, pd, plt, sn, sys
 
 
@@ -326,7 +327,6 @@ def _(np, x2):
             val_copy[0] = 3.14159
             print(f"Modify val\n{val_copy}")
 
-
     def print_slicing(name, val=x2, nd=False):
         if name == "1d":
             x = np.arange(10)
@@ -348,7 +348,6 @@ def _(np, x2):
             print(f"first row of x2 -> {val_copy[0, :]}")
             print(f"compact syntax -> {val_copy[0]}")
 
-
     def print_reshape():
         grid = np.arange(1, 10).reshape((3, 3))
         print(f"Grid -> {grid}")
@@ -360,7 +359,6 @@ def _(np, x2):
         print(f"column vector via reshape -> {z.reshape((3, 1))}")
         print(f"column vector via newaxis -> {z[:, np.newaxis]}")
 
-
     def print_concat():
         x = np.array([1, 2, 3])
         y = np.array([3, 2, 1])
@@ -369,9 +367,7 @@ def _(np, x2):
         print(f"concatenate again -> {np.concatenate([x, y, z])}")
         grid1 = np.arange(1, 7).reshape(2, 3)
         grid2 = grid1.copy()
-        print(
-            f"concatenate grid along first axis -> {np.concatenate([grid1, grid1])}"
-        )
+        print(f"concatenate grid along first axis -> {np.concatenate([grid1, grid1])}")
         print(
             f"concatenate grid along second axis -> {np.concatenate([grid2, grid2], axis=1)}"
         )
@@ -380,7 +376,6 @@ def _(np, x2):
         print(f"vertically stack arrays -> {np.vstack([x, grid3])}")
         y2 = np.array([[99], [99]])
         print(f"horizontally stack arrays -> {np.hstack([grid3, y2])}")
-
 
     def print_split():
         x = [1, 2, 3, 99, 99, 3, 2, 1]
@@ -396,6 +391,7 @@ def _(np, x2):
         print(
             f"left grid horizontal split -> {left}\nright grid horizontal split -> {right}"
         )
+
     return (
         print_concat,
         print_indexing,
@@ -458,6 +454,7 @@ def _(mo):
 @app.cell
 def _(np):
     from scipy import special
+
     def print_arithmetic():
         x = np.arange(4)
         print(f"x -> {x}")
@@ -469,7 +466,7 @@ def _(np):
         print(f"-x -> {-x}")
         print(f"x**2 -> {x**2}")
         print(f"x % 2 -> {x % 2}")
-        print(f"-(0.5*x+1)**2 -> {-(0.5*x+1)**2}")
+        print(f"-(0.5*x+1)**2 -> {-((0.5 * x + 1) ** 2)}")
 
     def print_abs():
         x = np.linspace(-2, 2, 5)
@@ -528,7 +525,7 @@ def _(np):
         print(f"z ->  {z}")
 
     def print_aggr():
-        x = np.arange(1,6)
+        x = np.arange(1, 6)
         print(f"x -> {x}")
         print(f"add reduce x -> {np.add.reduce(x)}")
         print(f"multiply reduce x -> {np.multiply.reduce(x)}")
@@ -539,6 +536,7 @@ def _(np):
         x = np.arange(1, 6)
         print(f"x -> {x}")
         print(f"outer product -> {np.multiply.outer(x, x)}")
+
     return (
         print_abs,
         print_advanced,
@@ -621,6 +619,7 @@ def _(data_files, np, pd, plt, sn):
         L = np.random.random(100)
         print(f"L -> {L}")
         print(f"sum -> {np.sum(L)}")
+
     def print_minmax():
         big_array = np.random.rand(1000000)
         print(f"big array -> {big_array}")
@@ -629,30 +628,33 @@ def _(data_files, np, pd, plt, sn):
         print(f"min compact -> {big_array.min()}")
         print(f"max compact -> {big_array.max()}")
         print(f"sum compact -> {big_array.sum()}")
+
     def print_ndaggr():
         M = np.random.random((3, 4))
         print(f"M -> {M}")
         print(f"sum -> {M.sum()}")
         print(f"min axis=0 -> {M.min(axis=0)}")
         print(f"max axis=1 -> {M.max(axis=1)}")
+
     def print_eda():
         data = data_files / "president_heights.csv"
         df = pd.read_csv(data)
-        heights = np.array(df['height(cm)'])
+        heights = np.array(df["height(cm)"])
         print(f"heights -> {heights}")
         print(f"Mean heights -> {heights.mean()}")
         print(f"Standard deviation -> {heights.std()}")
         print(f"Min height -> {heights.min()}")
         print(f"Ma height -> {heights.max()}")
-        print(f"25th percentile -> {np.percentile(heights,25)}")
+        print(f"25th percentile -> {np.percentile(heights, 25)}")
         print(f"Median -> {np.median(heights)}")
         print(f"75th percentile -> {np.percentile(heights, 75)}")
         sn.set()
         plt.hist(heights)
         plt.title("Height Distribution of US Presidents")
-        plt.xlabel('height(cm)')
-        plt.ylabel('number')
+        plt.xlabel("height(cm)")
+        plt.ylabel("number")
         plt.show()
+
     return print_eda, print_minmax, print_ndaggr, print_sum
 
 
@@ -677,6 +679,265 @@ def _(print_ndaggr):
 @app.cell
 def _(print_eda):
     print_eda()
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ## Computation on Arrays - Broadecasting
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ### Definitions
+    """)
+    return
+
+
+@app.cell
+def _(np):
+    def broadcast_demo():
+        a = np.array([0, 1, 2])
+        print(f"a -> {a}")
+        print(f"a + 5 -> {a + 5}")
+        M = np.ones((3, 3))
+        print(f"M -> {M}")
+        print(f"M + a -> {M + a}")
+        c = np.arange(3)
+        d = np.arange(3)[:, np.newaxis]
+        print(f"c -> {c}")
+        print(f"d -> {d}")
+        print(f"c + d -> {c + d}")
+
+    return (broadcast_demo,)
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    **Rule 1:** If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is *padded* with ones on its leading (left) side
+
+    **Rule 2:** If the shape of the two arrays does not match in any dimension, the array with shape equal to 1 in that dimension is stretched to match the other shape
+
+    **Rule 3:** If in any dimension the sizes disagree and neither is equal to 1, an error is raised
+    """)
+    return
+
+
+@app.cell
+def _(np, plt):
+    def broadcast_1():
+        M = np.ones((2, 3))
+        a = np.arange(3)
+        print(f"M -> {M}")
+        print(f"M shape -> {M.shape}")
+        print(f"a -> {a}")
+        print(f"a shape -> {a.shape}")
+        print(f"M + a -> {M + a}")
+
+    def broadcast_2():
+        a = np.arange(3).reshape((3, 1))
+        b = np.arange(3)
+        print(f"a -> {a}")
+        print(f"a shape -> {a.shape}")
+        print(f"b -> {b}")
+        print(f"b shape -> {b.shape}")
+        print(f"a + b -> {a + b}")
+
+    def broadcast_3():
+        M = np.ones((3, 2))
+        a = np.arange(3)
+        print(f"M -> {M}")
+        print(f"M shape -> {M.shape}")
+        print(f"a -> {a}")
+        print(f"a shape -> {a.shape}")
+        print("this will fail -> dimensions do not follow rules 1 or 2")
+        print("reshape")
+        print(f"a reshape -> {a[:, np.newaxis].shape}")
+        print(f"try M + a -> {M + a[:, np.newaxis]}")
+        print(
+            f"log(exp(a) + exp(b)) - with better precision -> {np.logaddexp(M, a[:, np.newaxis])}"
+        )
+
+    def broadcast_practice():
+        X = np.random.random((10, 3))
+        X_mean = X.mean(0)
+        print(f"X -> {X}")
+        print(f"X mean -> {X_mean}")
+        X_centered = X - X_mean
+        print(f"Center X -> {X_centered}")
+        print(f"Check centering -> {X_centered.mean(0)}")
+
+    def plot2d():
+        x = np.linspace(0, 5, 50)
+        y = np.linspace(0, 5, 50)[:, np.newaxis]
+        z = np.sin(x) ** 10 + np.cos(10 + y * x) * np.cos(x)
+        plt.imshow(z, origin="lower", extent=[0, 5, 0, 5], cmap="viridis")
+        plt.colorbar()
+        plt.tight_layout()
+        plt.show()
+
+    return broadcast_1, broadcast_2, broadcast_3, broadcast_practice, plot2d
+
+
+@app.cell
+def _(broadcast_demo):
+    broadcast_demo()
+    return
+
+
+@app.cell
+def _(broadcast_1):
+    broadcast_1()
+    return
+
+
+@app.cell
+def _(broadcast_2):
+    broadcast_2()
+    return
+
+
+@app.cell
+def _(broadcast_3):
+    broadcast_3()
+    return
+
+
+@app.cell
+def _(broadcast_practice):
+    broadcast_practice()
+    return
+
+
+@app.cell
+def _(plot2d):
+    plot2d()
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ## Comparisons, Masks, Boolean Logic
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ### Definitions
+    """)
+    return
+
+
+@app.cell
+def _(data_files, pd):
+    rainfall_data = pd.read_csv(data_files / "Seattle2014.csv")
+    rainfall = rainfall_data["PRCP"].values
+    inches = rainfall / 254.0
+    print(f"inches shape -> {inches.shape}")
+    return (inches,)
+
+
+@app.cell
+def _(inches, plt, sn):
+    sn.set()
+    plt.hist(inches, 40)
+    plt.show()
+    return
+
+
+@app.cell
+def _(inches, np):
+    def comparison_ufuncs():
+        x = np.array([1, 2, 3, 4, 5])
+        print(f"x -> {x}")
+        print(f"x > 3 -> {x > 3}")
+        print(f"x <= 3 -> {x <= 3}")
+        print(f"x >= 3 -> {x >= 3}")
+        print(f"x != 3 -> {x != 3}")
+        print(f"x == 3 -> {x == 3}")
+        print(f"(2*x) == (x**2) -> {(2 * x) == (x**2)}")
+        rng = np.random.RandomState(0)
+        y = rng.randint(10, size=(4, 3))
+        print(f"y -> {y}")
+        print(f"y < 6 -> {y < 6}")
+
+    def bool_arrays():
+        rng = np.random.RandomState(0)
+        y = rng.randint(10, size=(4, 3))
+        print(f"y -> {y}")
+        print(f" count y < 6 -> {np.count_nonzero(y < 6)}")
+        print(f"count y < 6 using sum -> {np.sum(y < 6)}")
+        print(f"how many values less than 6 in each row -> {np.sum(y < 6, axis=1)}")
+        print(f"any values greater than 8 -> {np.any(y > 8)}")
+        print(f"any values less than zero -> {np.any(y < 0)}")
+        print(f"are there any values less than 10 -> {np.all(y < 10)}")
+        print(f"are all values equal to 6 -> {np.all(y == 6)}")
+        print(f"are all values in each row less than 8 -> {np.all(y < 8, axis=1)}")
+
+    def bool_operators(d=inches):
+        print(f"{np.sum((d > 0.5) & (d < 1))}")
+        print(f"{np.sum(~((d <= 0.5) | (d >= 1)))}")
+        print(f"Number days without rain -> {np.sum(inches == 0)}")
+        print(f"Number days with rain -> {np.sum(inches != 0)}")
+        print(f"Days with more than 0.5 inches -> {np.sum(inches > 0.5)}")
+        print(
+            f"Rainy days with < 0.2 inches -> {np.sum((inches > 0) & (inches < 0.2))}"
+        )
+
+    def bool_masks(d=inches):
+        rng = np.random.RandomState(0)
+        y = rng.randint(10, size=(4, 3))
+        print(f"y -> {y}")
+        print(f"y < 5 -> {y < 5}")
+        print(f"y < 5 values -> {y[y < 5]}")
+        rainy = d > 0
+        days = np.arange(365)
+        summer = (days > 172) & (days < 262)
+
+        print(
+            f"Median precip on rainy days in 2014 (inches) -> {np.median(d[rainy])}",
+        )
+        print(
+            f"Median precip on summer days in 2014 (inches) -> {np.median(d[summer])}"
+        )
+        print(f"Maximum precip on summer days in 2014 (inches) -> {np.max(d[summer])}")
+
+        print(
+            f"Median precip on non-summer rainy days (inches) -> {np.median(d[rainy & ~summer])}"
+        )
+
+    return bool_arrays, bool_masks, bool_operators, comparison_ufuncs
+
+
+@app.cell
+def _(comparison_ufuncs):
+    comparison_ufuncs()
+    return
+
+
+@app.cell
+def _(bool_arrays):
+    bool_arrays()
+    return
+
+
+@app.cell
+def _(bool_operators, inches):
+    bool_operators(d=inches)
+    return
+
+
+@app.cell
+def _(bool_masks, inches):
+    bool_masks(d=inches)
     return
 
 
